@@ -1,4 +1,4 @@
-function EmptyMainScreen(): JSX.Element {
+function FavoritesScreen(): JSX.Element {
   return(
     <div className="page">
       <header className="header">
@@ -168,4 +168,4 @@ function EmptyMainScreen(): JSX.Element {
   );
 }
 
-export default EmptyMainScreen;
+export default FavoritesScreen;
