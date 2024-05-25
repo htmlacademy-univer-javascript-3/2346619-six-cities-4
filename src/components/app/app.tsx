@@ -7,23 +7,19 @@ import ErrorScreen from '../../pages/error-screen/error-screen';
 import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../constants/status.tsx';
 import { AppRoute } from '../constants/app-route.tsx';
-import { Offer } from '../../types/offer';
 import { Review } from '../../types/review.ts';
 
 type AppComponentProps = {
-  placesCount: number;
-  offers: Offer[];
   reviews: Review[];
 }
 
-function App({ placesCount, offers, reviews }: AppComponentProps): JSX.Element {
-  const favourites = offers.filter((o) => o.isFavorite);
+function App({ reviews }: AppComponentProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen placesCount={placesCount} offers={offers}/>}
+          element={<MainScreen/>}
         />
         <Route
           path={AppRoute.Login}
@@ -35,7 +31,7 @@ function App({ placesCount, offers, reviews }: AppComponentProps): JSX.Element {
             <PrivateRoute
               authorizationStatus={AuthorizationStatus.Auth}
             >
-              <FavotitesScreen offers={favourites}/>
+              <FavotitesScreen/>
             </PrivateRoute>
           }
         />

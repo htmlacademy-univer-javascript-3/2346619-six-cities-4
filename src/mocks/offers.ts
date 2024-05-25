@@ -1,4 +1,6 @@
 import { Offer } from '../types/offer';
+import { cities } from './cities';
+import { points } from './points';
 import { reviews } from './reviews';
 
 export const offers: Offer[] = [
@@ -11,7 +13,9 @@ export const offers: Offer[] = [
     isPremium: true,
     rating: 4,
     reviews: [reviews[0]],
-    previewImage: ['img/apartment-01.jpg']
+    previewImage: ['img/apartment-01.jpg'],
+    city: cities[1],
+    point: points[0]
   },
   {
     id: '2',
@@ -22,7 +26,9 @@ export const offers: Offer[] = [
     isPremium: false,
     rating: 4,
     reviews: [reviews[1]],
-    previewImage: ['img/room.jpg']
+    previewImage: ['img/room.jpg'],
+    city: cities[0],
+    point: points[1]
   },
   {
     id: '3',
@@ -33,7 +39,9 @@ export const offers: Offer[] = [
     isPremium: false,
     rating: 4,
     reviews: [reviews[2]],
-    previewImage: ['img/apartment-02.jpg']
+    previewImage: ['img/apartment-02.jpg'],
+    city: cities[0],
+    point: points[2]
   },
   {
     id: '4',
@@ -44,6 +52,8 @@ export const offers: Offer[] = [
     isPremium: true,
     rating: 5,
     reviews: [reviews[3]],
-    previewImage: ['img/apartment-03.jpg']
+    previewImage: ['img/apartment-03.jpg'],
+    city: cities[5],
+    point: points[3]
   },
 ];

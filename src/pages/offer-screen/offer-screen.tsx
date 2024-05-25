@@ -4,8 +4,7 @@ import { Review } from '../../types/review';
 import ReviewsList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import { offers } from '../../mocks/offers';
-import { points } from '../../mocks/points';
-import { amsterdam } from '../../mocks/cities';
+import { cities } from '../../mocks/cities';
 import CityCardList from '../../components/offer-list/offer-list';
 
 type OfferScreenProps = {
@@ -173,7 +172,7 @@ function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={amsterdam} points={points.slice(0,3)} selectedPoint={undefined}/>
+            <Map city={cities[1]} offers={offers} selectedPoint={undefined}/>
           </section>
         </section>
         <div className="container">
