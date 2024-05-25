@@ -172,7 +172,7 @@ function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={cities[1]} offers={offers} selectedPoint={undefined}/>
+            <Map city={cities[1]} offers={offers}/>
           </section>
         </section>
         <div className="container">
