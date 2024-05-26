@@ -1,10 +1,9 @@
-import { City } from '../../types/city';
-import { cities } from '../../mocks/cities';
 import { useAppDispatch } from '../../hooks';
 import { changeCity } from '../../store/action';
+import { cities } from '../../const';
 
 type CityListProps = {
-  chosenCity: City;
+  chosenCity: string;
 }
 
 function CityList({chosenCity}: CityListProps): JSX.Element {
@@ -12,9 +11,9 @@ function CityList({chosenCity}: CityListProps): JSX.Element {
   return(
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
-        <li className="locations__item" key={city.name}>
-          <a className={`locations__item-link tabs__item ${(city === chosenCity) ? 'tabs__item--active' : ''}`} onClick={() => dispatch(changeCity(city))}>
-            <span>{city.name}</span>
+        <li className="locations__item" key={city}>
+          <a className={`locations__item-link tabs__item ${(city === chosenCity) ? 'tabs__item--active' : 'tabs__item--incative'}`} onClick={() => dispatch(changeCity(city))}>
+            <span>{city}</span>
           </a>
         </li>
       ))}

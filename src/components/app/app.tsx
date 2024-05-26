@@ -8,12 +8,20 @@ import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../constants/status.tsx';
 import { AppRoute } from '../constants/app-route.tsx';
 import { Review } from '../../types/review.ts';
+import { useAppSelector } from '../../hooks/index.ts';
+import LoadingScreen from '../../pages/loading-screen/loading-screen.tsx';
 
 type AppComponentProps = {
   reviews: Review[];
 }
 
 function App({ reviews }: AppComponentProps): JSX.Element {
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  if (isOffersDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <BrowserRouter>
       <Routes>
