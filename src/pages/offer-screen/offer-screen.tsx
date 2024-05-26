@@ -3,15 +3,15 @@ import CommentForm from '../../components/comment-form/comment-form';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
-import { offers } from '../../mocks/offers';
-import { cities } from '../../mocks/cities';
 import CityCardList from '../../components/offer-list/offer-list';
+import { useAppSelector } from '../../hooks';
 
 type OfferScreenProps = {
   reviews: Review[];
 }
 
 function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   return (
     <div className="page">
       <header className="header">
@@ -172,7 +172,7 @@ function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={cities[1]} offers={offers}/>
+            <Map offers={offers} city={offers[0].city}/>
           </section>
         </section>
         <div className="container">

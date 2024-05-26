@@ -1,30 +1,29 @@
 import {createReducer} from '@reduxjs/toolkit';
-import { City } from '../types/city';
 import { Offer } from '../types/offer';
-import { cities } from '../mocks/cities';
-import { offers } from '../mocks/offers';
-import { changeCity, changeFilter, changeSelectedPoint, getOffers } from './action';
+import { changeCity, changeFilter, changeSelectedPoint, loadOffers, setError, setOffersDataLoadingStatus } from './action';
 import { Point } from '../types/point';
+import { cities } from '../const';
 
 type StateType = {
-  city: City;
+  city: string;
   offers: Offer[];
   filterType: string;
   selectedPoint: Point | undefined;
+  isOffersDataLoading: boolean;
+  error: string | null;
 }
 
 const initialState: StateType = {
   city: cities[0],
-  offers: offers,
+  offers: [],
   filterType: 'Popular',
-  selectedPoint: undefined
+  selectedPoint: undefined,
+  isOffersDataLoading: false,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getOffers, (state) => {
-      state.offers = offers;
-    })
     .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
@@ -33,6 +32,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSelectedPoint, (state, action) => {
       state.selectedPoint = action.payload;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

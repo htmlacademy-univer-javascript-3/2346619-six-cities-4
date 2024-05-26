@@ -15,3 +15,7 @@ const getFilter = (offers: Offer[], filterType: string): Offer[] | undefined => 
 };
 
 export default getFilter;
+
+export const TIMEOUT_SHOW_ERROR = 2000;
+
+export const cities = ['Paris', 'Amsterdam', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];
