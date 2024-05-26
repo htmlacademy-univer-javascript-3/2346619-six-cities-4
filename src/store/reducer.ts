@@ -1,8 +1,9 @@
 import {createReducer} from '@reduxjs/toolkit';
 import { Offer } from '../types/offer';
-import { changeCity, changeFilter, changeSelectedPoint, loadOffers, setError, setOffersDataLoadingStatus } from './action';
+import { addFavorite, changeCity, changeFilter, changeSelectedPoint, loadOffers, requireAuthorization, saveEmail, setError, setOffersDataLoadingStatus, showMessageInitial } from './action';
 import { Point } from '../types/point';
 import { cities } from '../const';
+import { AuthorizationStatus } from '../components/constants/status';
 
 type StateType = {
   city: string;
@@ -11,6 +12,10 @@ type StateType = {
   selectedPoint: Point | undefined;
   isOffersDataLoading: boolean;
   error: string | null;
+  authorizationStatus: AuthorizationStatus;
+  email: string;
+  favorites: string[];
+  showMessage: boolean;
 }
 
 const initialState: StateType = {
@@ -20,6 +25,10 @@ const initialState: StateType = {
   selectedPoint: undefined,
   isOffersDataLoading: false,
   error: null,
+  authorizationStatus: AuthorizationStatus.Unknown,
+  email: '',
+  favorites: [],
+  showMessage: true
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -41,6 +50,18 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(saveEmail, (state, action) => {
+      state.email = action.payload;
+    })
+    .addCase(addFavorite, (state, action) => {
+      state.favorites = action.payload;
+    })
+    .addCase(showMessageInitial, (state, action) => {
+      state.showMessage = action.payload;
     });
 });
 

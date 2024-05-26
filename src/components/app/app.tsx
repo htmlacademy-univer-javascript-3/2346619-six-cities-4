@@ -1,15 +1,19 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import MainScreen from '../../pages/main-screen/main-screen';
 import LoginScreen from '../../pages/login-screen/login-screen';
 import FavotitesScreen from '../../pages/favorites-screen/favorites-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import ErrorScreen from '../../pages/error-screen/error-screen';
 import PrivateRoute from '../private-route/private-route';
-import { AuthorizationStatus } from '../constants/status.tsx';
 import { AppRoute } from '../constants/app-route.tsx';
 import { Review } from '../../types/review.ts';
 import { useAppSelector } from '../../hooks/index.ts';
 import LoadingScreen from '../../pages/loading-screen/loading-screen.tsx';
+import { AuthorizationStatus } from '../constants/status.tsx';
+import browserHistory from '../../browser-history.ts';
+import HistoryRouter from '../history-route/history-route.tsx';
+import { fetchFavoritesAction } from '../../store/api-action.ts';
+import { store } from '../../store/index.ts';
 
 type AppComponentProps = {
   reviews: Review[];
@@ -17,13 +21,17 @@ type AppComponentProps = {
 
 function App({ reviews }: AppComponentProps): JSX.Element {
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  if (isOffersDataLoading) {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    store.dispatch(fetchFavoritesAction());
+  }
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
   }
   return (
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Main}
@@ -36,9 +44,7 @@ function App({ reviews }: AppComponentProps): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element={
-            <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
-            >
+            <PrivateRoute>
               <FavotitesScreen/>
             </PrivateRoute>
           }
@@ -52,7 +58,7 @@ function App({ reviews }: AppComponentProps): JSX.Element {
           element={<ErrorScreen/>}
         />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 
