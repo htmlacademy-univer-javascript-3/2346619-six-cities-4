@@ -19,3 +19,10 @@ export default getFilter;
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const cities = ['Paris', 'Amsterdam', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+  Favorite = '/favorite'
+}
