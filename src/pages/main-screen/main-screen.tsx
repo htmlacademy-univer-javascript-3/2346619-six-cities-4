@@ -30,7 +30,7 @@ function MainScreen(): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={cityOffers} city={cityOffers[0].city} />
+                <Map points={cityOffers.map((of) => of.location)} city={cityOffers[0].city} />
               </section>
             </div>
           </div>

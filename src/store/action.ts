@@ -3,6 +3,8 @@ import { Point } from '../types/point';
 import { Offer } from '../types/offer';
 import { AuthorizationStatus } from '../components/constants/status';
 import { AppRoute } from '../components/constants/app-route';
+import { SelectedOffer } from '../types/selected-offer';
+import { Review } from '../types/review';
 
 export const changeCity = createAction('city/change', (value: string) => ({
   payload: value
@@ -31,3 +33,9 @@ export const redirectToRoute = createAction<AppRoute>('offer/redirectToRoute');
 export const addFavorite = createAction<string[]>('favorite/add');
 
 export const showMessageInitial = createAction<boolean>('data/show');
+
+export const loadSelectedOffer = createAction<SelectedOffer>('offer/load');
+
+export const setSelectedOfferDataLoadingStatus = createAction<boolean>('offer/setSelectedOfferDataLoadingStatus');
+
+export const loadSelectedOfferComments = createAction<Review[]>('offer/loadComment');
