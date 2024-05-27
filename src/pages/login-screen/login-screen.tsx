@@ -1,13 +1,21 @@
 import { FormEvent, useRef } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-action';
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { AuthorizationStatus } from '../../components/constants/status';
+import { AppRoute } from '../../components/constants/app-route';
+
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
   const dispatch = useAppDispatch();
+
+  const status = useAppSelector((state) => state.authorizationStatus);
+  if (status === AuthorizationStatus.Auth) {
+    window.location.href = AppRoute.Main;
+  }
+
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();

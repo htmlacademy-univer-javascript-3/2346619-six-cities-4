@@ -1,9 +1,10 @@
 import {createReducer} from '@reduxjs/toolkit';
 import { Offer } from '../types/offer';
-import { addFavorite, changeCity, changeFilter, changeSelectedPoint, loadOffers, requireAuthorization, saveEmail, setError, setOffersDataLoadingStatus, showMessageInitial } from './action';
+import { addFavorite, changeCity, changeFilter, changeSelectedPoint, loadOffers, loadSelectedOffer, loadSelectedOfferComments, requireAuthorization, saveEmail, setError, setOffersDataLoadingStatus, setSelectedOfferDataLoadingStatus, showMessageInitial } from './action';
 import { Point } from '../types/point';
 import { cities } from '../const';
 import { AuthorizationStatus } from '../components/constants/status';
+import { SelectedOffer } from '../types/selected-offer';
 
 type StateType = {
   city: string;
@@ -16,6 +17,9 @@ type StateType = {
   email: string;
   favorites: string[];
   showMessage: boolean;
+  selectedOfferId: string;
+  selectedOffer: SelectedOffer | undefined;
+  isSelectedOfferDataLoading: boolean;
 }
 
 const initialState: StateType = {
@@ -28,7 +32,10 @@ const initialState: StateType = {
   authorizationStatus: AuthorizationStatus.Unknown,
   email: '',
   favorites: [],
-  showMessage: true
+  showMessage: true,
+  selectedOfferId: '',
+  selectedOffer: undefined,
+  isSelectedOfferDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -62,6 +69,15 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(showMessageInitial, (state, action) => {
       state.showMessage = action.payload;
+    })
+    .addCase(loadSelectedOffer, (state, action) => {
+      state.selectedOffer = action.payload;
+    })
+    .addCase(setSelectedOfferDataLoadingStatus, (state, action) => {
+      state.isSelectedOfferDataLoading = action.payload;
+    })
+    .addCase(loadSelectedOfferComments, (state, action) => {
+      state.selectedOffer!.reviews = action.payload;
     });
 });
 

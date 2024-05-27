@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeSelectedPoint } from '../../store/action';
-import { changeFavorite } from '../../store/api-action';
+import { changeFavorite, fetchOfferAction } from '../../store/api-action';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +12,11 @@ type OfferProps = {
 function CityCard({ offer, cardType }: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
   const favorites = useAppSelector((state) => state.favorites);
+
+  const handleOfferTitleClick = () => {
+    dispatch(fetchOfferAction(offer.id));
+  };
+
   const handleAddFavorite = () => {
     dispatch(changeFavorite({
       favorites: favorites,
@@ -50,7 +55,7 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
+        <h2 className="place-card__name" onClick={handleOfferTitleClick}>
           <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
         </h2>
         <p className="place-card__type">{offer.type}</p>
