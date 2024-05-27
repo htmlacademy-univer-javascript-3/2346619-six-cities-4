@@ -1,10 +1,12 @@
 import Card from '../../components/city-card/city-card';
 import { useAppSelector } from '../../hooks';
 import LoginHeader from '../../components/login-header/login-header';
+import { getOffers } from '../../store/offer-process/selectors';
+import { getFavorites } from '../../store/favorite-process/selectors';
 
 function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
-  const favorites = useAppSelector((state) => state.favorites);
+  const offers = useAppSelector(getOffers);
+  const favorites = useAppSelector(getFavorites);
   const favoriteOffers = offers.filter((offer) => favorites.includes(offer.id));
   return(
     <div className="page">

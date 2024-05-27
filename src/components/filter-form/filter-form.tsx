@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeFilter } from '../../store/action';
+import { changeFilter } from '../../store/offer-process/offer-process';
+import { getFilterType } from '../../store/offer-process/selectors';
 
 function FilterForm(): JSX.Element {
   const [isOpened, setIsOpened] = useState(false);
-  const filterType = useAppSelector((state) => state.filterType);
+  const filterType = useAppSelector(getFilterType);
   const dispatch = useAppDispatch();
   const handleFilterTypeChange = (type: string) => {
     dispatch(changeFilter(type));

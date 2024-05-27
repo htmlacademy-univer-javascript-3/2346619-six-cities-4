@@ -4,10 +4,11 @@ import { useAppSelector } from '../../hooks';
 import CityList from '../../components/city-list/city-list';
 import FilterForm from '../../components/filter-form/filter-form';
 import LoginHeader from '../../components/login-header/login-header';
+import { getCity, getOffers } from '../../store/offer-process/selectors';
 
 function MainScreen(): JSX.Element {
-  const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => state.offers);
+  const city = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
   const cityOffers = offers.filter((offer) => offer.city.name === city);
 
   return (

@@ -8,20 +8,22 @@ import PrivateRoute from '../private-route/private-route';
 import { AppRoute } from '../constants/app-route.tsx';
 import { useAppSelector } from '../../hooks/index.ts';
 import LoadingScreen from '../../pages/loading-screen/loading-screen.tsx';
-import { AuthorizationStatus } from '../constants/status.tsx';
 import browserHistory from '../../browser-history.ts';
 import HistoryRouter from '../history-route/history-route.tsx';
-import { fetchFavoritesAction } from '../../store/api-action.ts';
+import { fetchFavoritesAction } from '../../store/api-actions.ts';
 import { store } from '../../store/index.ts';
 import { useEffect } from 'react';
+import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/selectors.ts';
+import { getIsOfferDataLoading } from '../../store/offer-process/selectors.ts';
 
 function App(): JSX.Element {
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector(getIsOfferDataLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   useEffect(() => {
     store.dispatch(fetchFavoritesAction());
   }, [authorizationStatus]);
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+  if (!isAuthChecked || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
