@@ -23,11 +23,13 @@ function App(): JSX.Element {
   useEffect(() => {
     store.dispatch(fetchFavoritesAction());
   }, [authorizationStatus]);
+
   if (!isAuthChecked || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
   }
+
   return (
     <HistoryRouter history={browserHistory}>
       <Routes>

@@ -6,23 +6,30 @@ import { useAppSelector } from '../../hooks';
 import LoginHeader from '../../components/login-header/login-header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { AuthorizationStatus } from '../../components/constants/status';
-import { fetchOfferAction } from '../../store/api-actions';
+import { changeFavorite, fetchOfferAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { store } from '../../store';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getSelectedOffer, getisSelectedOfferDataLoading } from '../../store/selected-offer-process/selectors';
 import { getOffers } from '../../store/offer-process/selectors';
 import { changeSelectedPoint } from '../../store/offer-process/offer-process';
+import { useParams } from 'react-router-dom';
+import { redirectToRoute } from '../../store/action';
+import { AppRoute } from '../../components/constants/app-route';
+import { getFavorites } from '../../store/favorite-process/selectors';
 
 function OfferScreen(): JSX.Element {
   const selectedOffer = useAppSelector(getSelectedOffer);
   const offerData = selectedOffer?.offerData;
   const offers = useAppSelector(getOffers);
   const nearbyOffers = selectedOffer?.nearbyOffers;
+  const favorites = useAppSelector(getFavorites);
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const rating = useAppSelector(getSelectedOffer)?.offerData.rating;
   const isSelectedOfferDataLoading = useAppSelector(getisSelectedOfferDataLoading);
-  const selectedOfferId = window.location.href.split('/').splice(-1)[0];
+  const selectedOfferId = String(useParams().id);
+  const bedrooms = offerData?.bedrooms;
+  const maxAdults = offerData?.maxAdults;
   useEffect(() => {
     store.dispatch(fetchOfferAction(selectedOfferId));
     store.dispatch(changeSelectedPoint(undefined));
@@ -32,6 +39,17 @@ function OfferScreen(): JSX.Element {
       <LoadingScreen />
     );
   }
+  const handleAddFavorite = () => {
+    if (authorizationStatus === AuthorizationStatus.NoAuth) {
+      store.dispatch(redirectToRoute(AppRoute.Login));
+    } else {
+      store.dispatch(changeFavorite({
+        favorites: favorites,
+        offerId: selectedOfferId,
+        status: favorites.includes(selectedOfferId) ? 0 : 1
+      }));
+    }
+  };
   return (
     <div className="page">
       <header className="header">
@@ -62,7 +80,7 @@ function OfferScreen(): JSX.Element {
                 <h1 className="offer__name">
                   {offerData?.title}
                 </h1>
-                <button className= {offerData?.isFavorite ? 'bookmark-button button offer__bookmark-button offer__bookmark-button--active' : 'offer__bookmark-button button'} type="button">
+                <button className={favorites.includes(selectedOfferId) ? 'bookmark-button button offer__bookmark-button offer__bookmark-button--active' : 'offer__bookmark-button button'} onClick={handleAddFavorite} type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -71,7 +89,7 @@ function OfferScreen(): JSX.Element {
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span style={{width: `${rating ? (rating / 5) * 100 : ''}%` }}></span>
+                  <span style={{ width: `${rating ? (rating / 5) * 100 : ''}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">{rating}</span>
@@ -81,10 +99,10 @@ function OfferScreen(): JSX.Element {
                   {offerData?.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {`${offerData?.bedrooms} Bedrooms`}
+                  {`${bedrooms} ${bedrooms && bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}`}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {`Max ${offerData?.maxAdults} adults`}
+                  {`Max ${maxAdults} ${maxAdults && maxAdults > 1 ? 'adults' : 'adult'}`}
                 </li>
               </ul>
               <div className="offer__price">
@@ -104,15 +122,15 @@ function OfferScreen(): JSX.Element {
               <div className="offer__host">
                 <h2 className="offer__host-title">Meet the host</h2>
                 <div className="offer__host-user user">
-                  <div className={`offer__avatar-wrapper ${offerData?.host.isPro ? 'offer__avatar-wrapper--pro ' : 'user__avatar-wrapper'}`}>
-                    <img className="offer__avatar user__avatar" src={offerData?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
+                  <div className={`offer__avatar-wrapper ${offerData?.host.isPro ? 'offer__avatar-wrapper--pro' : 'user__avatar-wrapper'}`}>
+                    <img className="offer__avatar user__avatar" src={offerData?.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                   </div>
                   <span className="offer__user-name">
                     {offerData?.host.name}
                   </span>
-                  <span className="offer__user-status">
-                    {offerData?.host.isPro}
-                  </span>
+                  {offerData?.host.isPro && (
+                    <span className="offer__user-status">Pro</span>
+                  )}
                 </div>
                 <div className="offer__description">
                   <p className="offer__text">
@@ -120,9 +138,11 @@ function OfferScreen(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <ReviewsList reviews={selectedOffer?.reviews} />
-              {authorizationStatus === AuthorizationStatus.Auth &&
-                <CommentForm />}
+              <section className="offer__reviews reviews">
+                <ReviewsList reviews={selectedOffer?.reviews} />
+                {authorizationStatus === AuthorizationStatus.Auth &&
+                  <CommentForm />}
+              </section>
             </div>
           </div>
           <section className="offer__map map">
@@ -132,7 +152,7 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CityCardList offers={nearbyOffers?.slice(0, 3)} listType={'near'}/>
+            <CityCardList offers={nearbyOffers?.slice(0, 3)} listType={'near'} />
           </section>
         </div>
       </main>
