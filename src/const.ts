@@ -14,8 +14,6 @@ export const getFilterSorting = (offers: Offer[] | undefined, filterType: string
   }
 };
 
-export default getFilterSorting;
-
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const cities = ['Paris', 'Amsterdam', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];
@@ -43,10 +41,16 @@ const monthsMap = new Map ([
   ['12', 'December'],
 ]);
 
+export const cardTypeMap = new Map ([
+  ['default', 'cities__card place-card'],
+  ['near', 'near-places__card place-card'],
+  ['favorite', 'favorites__card place-card']
+]);
+
 export const getCommentDate = (date: string[]): string => {
   const year = date[0];
   const month = monthsMap.get(date[1]);
-  return `${year} ${month}`;
+  return `${month} ${year}`;
 };
 
 export enum NameSpace {

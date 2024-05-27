@@ -22,7 +22,6 @@ const activeIcon = new Icon({
   iconSize: [30, 30]
 });
 
-
 function MapComponent(props: MapProps): JSX.Element {
   const selectedPoint = useAppSelector(getSelectedPoint);
   const { city, points } = props;
@@ -66,7 +65,7 @@ function MapComponent(props: MapProps): JSX.Element {
     }
   }, [map, points, selectedPoint, currentUrl]);
 
-  return <div style={{height: '100%'}} ref={mapRef}></div>;
+  return <div style={{ height: '100%' }} ref={mapRef}></div>;
 }
 
 const Map = memo(MapComponent);

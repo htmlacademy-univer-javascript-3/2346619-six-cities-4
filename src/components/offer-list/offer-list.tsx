@@ -7,7 +7,7 @@ import { getFilterType } from '../../store/offer-process/selectors';
 
 type OfferPropsList = {
   offers: Offer[] | undefined;
-  listType: 'default' | 'near';
+  listType: 'default' | 'near' | 'favorite';
 };
 
 function CityCardListComponent({offers, listType}: OfferPropsList): JSX.Element {

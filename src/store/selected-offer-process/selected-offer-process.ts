@@ -6,6 +6,8 @@ import { NameSpace } from '../../const';
 const initialState: SelectedOfferProcess = {
   selectedOffer: undefined,
   isSelectedOfferDataLoading: false,
+  isCommentPosting: false,
+  isCommentRejected: false
 };
 
 export const selectedOfferProcess = createSlice({
@@ -24,8 +26,18 @@ export const selectedOfferProcess = createSlice({
       .addCase(fetchOfferAction.rejected, (state) => {
         state.isSelectedOfferDataLoading = false;
       })
+      .addCase(postComment.pending, (state) => {
+        state.isCommentPosting = true;
+        state.isCommentRejected = true;
+      })
+      .addCase(postComment.rejected, (state) => {
+        state.isCommentRejected = true;
+        state.isCommentPosting = false;
+      })
       .addCase(postComment.fulfilled, (state, action) => {
         state.selectedOffer!.reviews = action.payload;
+        state.isCommentPosting = false;
+        state.isCommentRejected = false;
       });
   }
 });

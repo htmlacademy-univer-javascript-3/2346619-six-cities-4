@@ -8,3 +8,4 @@ export const getOffers = (state: State): Offer[] => state[NameSpace.Offers].offe
 export const getCity = (state: State): string => state[NameSpace.Offers].city;
 export const getSelectedPoint = (state: State): undefined | Point => state[NameSpace.Offers].selectedPoint;
 export const getIsOfferDataLoading = (state: State): boolean => state[NameSpace.Offers].isOffersDataLoading;
+export const getHasError = (state: State): boolean => state[NameSpace.Offers].hasError;
