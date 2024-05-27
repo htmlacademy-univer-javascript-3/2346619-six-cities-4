@@ -6,21 +6,26 @@ import { useAppSelector } from '../../hooks';
 import LoginHeader from '../../components/login-header/login-header';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { AuthorizationStatus } from '../../components/constants/status';
-import { fetchOfferAction } from '../../store/api-action';
+import { fetchOfferAction } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { store } from '../../store';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getSelectedOffer, getisSelectedOfferDataLoading } from '../../store/selected-offer-process/selectors';
+import { getOffers } from '../../store/offer-process/selectors';
+import { changeSelectedPoint } from '../../store/offer-process/offer-process';
 
 function OfferScreen(): JSX.Element {
-  const selectedOffer = useAppSelector((state) => state.selectedOffer);
+  const selectedOffer = useAppSelector(getSelectedOffer);
   const offerData = selectedOffer?.offerData;
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
   const nearbyOffers = selectedOffer?.nearbyOffers;
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const rating = useAppSelector((state) => state.selectedOffer?.offerData.rating);
-  const isSelectedOfferDataLoading = useAppSelector((state) => state.isSelectedOfferDataLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const rating = useAppSelector(getSelectedOffer)?.offerData.rating;
+  const isSelectedOfferDataLoading = useAppSelector(getisSelectedOfferDataLoading);
   const selectedOfferId = window.location.href.split('/').splice(-1)[0];
   useEffect(() => {
     store.dispatch(fetchOfferAction(selectedOfferId));
+    store.dispatch(changeSelectedPoint(undefined));
   }, [selectedOfferId]);
   if (isSelectedOfferDataLoading) {
     return (
@@ -115,12 +120,9 @@ function OfferScreen(): JSX.Element {
                   </p>
                 </div>
               </div>
-              <section className="offer__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{selectedOffer?.reviews.length}</span></h2>
-                <ReviewsList reviews={selectedOffer?.reviews} />
-                {authorizationStatus === AuthorizationStatus.Auth &&
-                  <CommentForm />}
-              </section>
+              <ReviewsList reviews={selectedOffer?.reviews} />
+              {authorizationStatus === AuthorizationStatus.Auth &&
+                <CommentForm />}
             </div>
           </div>
           <section className="offer__map map">

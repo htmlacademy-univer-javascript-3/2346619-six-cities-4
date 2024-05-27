@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { logoutAction } from '../../store/api-action';
+import { logoutAction } from '../../store/api-actions';
 import { AuthorizationStatus } from '../constants/status';
+import { getAuthorizationStatus, getEmail } from '../../store/user-process/selectors';
+import { getFavorites } from '../../store/favorite-process/selectors';
 
 function LoginHeader(): JSX.Element {
   const dispatch = useAppDispatch();
-  const email = useAppSelector((state) => state.email);
-  const favoriteOffers = useAppSelector((state) => state.favorites);
-  const status = useAppSelector((state) => state.authorizationStatus);
+  const email = useAppSelector(getEmail);
+  const favoriteOffers = useAppSelector(getFavorites);
+  const status = useAppSelector(getAuthorizationStatus);
   const handleSignOut = () => {
     dispatch(logoutAction());
   };

@@ -1,17 +1,19 @@
+import { memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeSelectedPoint } from '../../store/action';
-import { changeFavorite, fetchOfferAction } from '../../store/api-action';
+import { changeFavorite, fetchOfferAction } from '../../store/api-actions';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
+import { changeSelectedPoint } from '../../store/offer-process/offer-process';
+import { getFavorites } from '../../store/favorite-process/selectors';
 
 type OfferProps = {
   offer: Offer;
   cardType: 'default' | 'near';
 }
 
-function CityCard({ offer, cardType }: OfferProps): JSX.Element {
+function CityCardComponent({ offer, cardType }: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const favorites = useAppSelector((state) => state.favorites);
+  const favorites = useAppSelector(getFavorites);
 
   const handleOfferTitleClick = () => {
     dispatch(fetchOfferAction(offer.id));
@@ -24,8 +26,21 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
       status: favorites.includes(offer.id) ? 0 : 1
     }));
   };
+
+  const handleOnMouseEnter = () => {
+    if (cardType === 'default') {
+      dispatch(changeSelectedPoint(offer.location));
+    }
+  };
+
+  const handleOnMouseLeave = () => {
+    if (cardType === 'default') {
+      dispatch(changeSelectedPoint(undefined));
+    }
+  };
+
   return (
-    <article className={`${cardType === 'default' ? 'cities__card place-card' : 'near-places__card place-card'}`} onMouseEnter={() => dispatch(changeSelectedPoint(offer.location))} onMouseLeave={() => dispatch(changeSelectedPoint(undefined))}>
+    <article className={`${cardType === 'default' ? 'cities__card place-card' : 'near-places__card place-card'}`} onMouseEnter={() => handleOnMouseEnter} onMouseLeave={() => handleOnMouseLeave}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
@@ -63,4 +78,7 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
     </article>
   );
 }
+
+const CityCard = memo(CityCardComponent);
+
 export default CityCard;
