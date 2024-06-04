@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import {getFilterSorting} from '../../const';
 import { useAppSelector } from '../../hooks';
 import {Offer} from '../../types/offer';
-import CityCard from '../city-card/city-card';
+import OfferCard from '../offer-card/offer-card';
 import { getFilterType } from '../../store/offer-process/selectors';
 
 type OfferPropsList = {
@@ -15,7 +15,7 @@ function CityCardListComponent({offers, listType}: OfferPropsList): JSX.Element 
   return (
     <div className={`${listType === 'default' ? 'cities__places-list places__list tabs__content' : 'near-places__list places__list'}`}>
       {useMemo(() => getFilterSorting(offers, filterType), [offers, filterType])?.map((offer) => (
-        <CityCard key={offer.id} offer={offer} cardType={listType}/>
+        <OfferCard key={offer.id} offer={offer} cardType={listType}/>
       ))}
     </div>
   );
