@@ -7,7 +7,7 @@ const initialState: SelectedOfferProcess = {
   selectedOffer: undefined,
   isSelectedOfferDataLoading: false,
   isCommentPosting: false,
-  isCommentRejected: false
+  isCommentRejected: false,
 };
 
 export const selectedOfferProcess = createSlice({

@@ -3,7 +3,7 @@ import { redirectToRoute } from '../../store/action';
 import { getFavorites } from '../../store/favorite-process/selectors';
 import { changeCity } from '../../store/offer-process/offer-process';
 import { getOffers } from '../../store/offer-process/selectors';
-import CityCard from '../city-card/city-card';
+import OfferCard from '../offer-card/offer-card';
 import { AppRoute } from '../constants/app-route';
 
 function FavoritesList(): JSX.Element {
@@ -30,7 +30,7 @@ function FavoritesList(): JSX.Element {
           </div>
           <div className="favorites__places">
             {favoriteOffers.filter((of) => of.city.name === city).map((offer) =>
-              <CityCard key={offer.id} offer={offer} cardType='favorite' />
+              <OfferCard key={offer.id} offer={offer} cardType='favorite' />
             )}
           </div>
         </li>
