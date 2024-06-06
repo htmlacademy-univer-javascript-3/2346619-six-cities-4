@@ -5,6 +5,7 @@ import { changeCity } from '../../store/offer-process/offer-process';
 import { getOffers } from '../../store/offer-process/selectors';
 import OfferCard from '../offer-card/offer-card';
 import { AppRoute } from '../constants/app-route';
+import { Link } from 'react-router-dom';
 
 function FavoritesList(): JSX.Element {
   const offers = useAppSelector(getOffers);
@@ -23,9 +24,9 @@ function FavoritesList(): JSX.Element {
         <li className="favorites__locations-items" key={city}>
           <div className="favorites__locations locations locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" onClick={() => handleCityClick(city)}>
+              <Link className="locations__item-link" onClick={() => handleCityClick(city)} to={'/'}>
                 <span>{city}</span>
-              </a>
+              </Link>
             </div>
           </div>
           <div className="favorites__places">
