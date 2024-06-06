@@ -36,9 +36,9 @@ function LoginHeader(): JSX.Element {
               )}
               <li className="header__nav-item">
                 {status === AuthorizationStatus.Auth ? (
-                  <a className="header__nav-link" onClick={handleSignOut}>
+                  <Link className="header__nav-link" onClick={handleSignOut} to={'/'}>
                     <span className="header__signout">Sign out</span>
-                  </a>
+                  </Link>
                 ) : (
                   <Link to="/login" className="header__nav-link">Login</Link>
                 )}

@@ -2,6 +2,7 @@ import LoginHeader from '../../components/login-header/login-header';
 import FavoritesList from '../../components/favorites-list/favorites-list';
 import { useAppSelector } from '../../hooks';
 import { getFavorites } from '../../store/favorite-process/selectors';
+import { Link } from 'react-router-dom';
 
 function FavoritesScreen(): JSX.Element {
   const favorites = useAppSelector(getFavorites);
@@ -35,9 +36,9 @@ function FavoritesScreen(): JSX.Element {
         </main>
       )}
       <footer className="footer container">
-        <a className="footer__logo-link" href="main.html">
+        <Link className="footer__logo-link" to="main.html">
           <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-        </a>
+        </Link>
       </footer>
     </div>
   );
